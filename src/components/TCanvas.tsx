@@ -7,20 +7,11 @@ import { Effect } from './Effect';
 import { ImagePlane } from './ImagePlane';
 
 export const TCanvas: VFC = () => {
-	const [imageUrl, setImageUrl] = useState('/pexels-photo-2832432.jpg')
+	const [imageUrl, setImageUrl] = useState('/assets/images/pexels-photo-2832432.jpg')
 
 	const getItBack = async (url: any) => {
     // console.log('getItBack: ')
     const imageUrlBlob = url
-    // console.log('imageUrl')
-    // console.log(imageUrl)
-
-    // effects.current.updateEffects()
-    // effects.updateEffects()
-    // console.log(effects)
-
-    // console.log('image')
-    // console.log(image)
     setImageUrl(String(imageUrlBlob))
     // setOutput([{ position: [0, 0, 0], rotation: [0, 0, 0], url: String(imageUrlBlob) }])
   }
@@ -53,10 +44,12 @@ export const TCanvas: VFC = () => {
 
 				{/* object */}
 				<Suspense fallback={null}>
-					<ImagePlane />
+					<ImagePlane imagePath={imageUrl}/>
 				</Suspense>
+
 				{/* effect */}
 				<Effect />
+
 			</Canvas>
 		</>
 	)

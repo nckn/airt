@@ -1,11 +1,14 @@
-import React, { VFC } from 'react';
+import React, { VFC, useState } from 'react';
 import * as THREE from 'three';
 import { Plane, useTexture } from '@react-three/drei';
-import { publicPath } from '../utils/file';
 
-export const ImagePlane: VFC = () => {
-	const path = (name: string) => publicPath(`/assets/images/${name}.jpg`)
-	const textures = useTexture([path('thum1'), path('thum2'), path('thum3')])
+type ImageProps = {
+	imagePath: string
+}
+
+export const ImagePlane: VFC<ImageProps> = ({ imagePath }) => {
+	const texture = useTexture(imagePath);
+	const [hovered, hover] = useState(false);
 
 	const material = (texture: THREE.Texture) =>
 		new THREE.ShaderMaterial({
@@ -18,9 +21,14 @@ export const ImagePlane: VFC = () => {
 
 	return (
 		<>
-			{textures.map((texture, i) => (
-				<Plane key={i} args={[1, 1 * (315 / 600)]} material={material(texture)} scale={0.98} position={[i - 1, 0, 0]} />
-			))}
+			<mesh
+				onPointerOver={(e) => (e.stopPropagation(), hover(true))}
+				onPointerOut={() => hover(false)}
+				scale={[2, 2, 0.05]}
+				position={[0, 0, 0]}
+			>
+				<Plane args={[1, 1]} material={material(texture)} position={[0, 0, 0.7]} />
+			</mesh>
 		</>
 	)
 }
